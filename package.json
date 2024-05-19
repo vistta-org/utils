@@ -7,11 +7,10 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://git.vistta.org/Vistta/vistta.git"
+    "url": "https://git.vistta.org/vistta/utils.git"
   },
   "scripts": {
-    "setup": "",
-    "setup:test": ""
+    "postinstall": ""
   },
   "author": "Tiago Terenas Almeida",
   "license": "CC BY-NC-ND 4.0 DEED",
