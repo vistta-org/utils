@@ -1,10 +1,32 @@
-export const isObject = (object) =>
-  object != null && typeof object === "object";
+/**
+ * Checks if a value is an object.
+ *
+ * @param {any} object - The value to check.
+ * @returns {boolean} Whether the value is an object.
+ */
+export function isObject(object) {
+  return object != null && typeof object === "object";
+}
 
-export const isObjectEmpty = (object) => Object.keys(object).length === 0;
+/**
+ * Checks if an object is empty.
+ *
+ * @param {Object} object - The object to check.
+ * @returns {boolean} Whether the object is empty.
+ */
+export function isObjectEmpty(object) {
+  return Object.keys(object).length === 0;
+}
 
-export const stringify = (object, formatted = false) =>
-  JSON.stringify(
+/**
+ * Stringifies an object.
+ *
+ * @param {Object} object - The object to stringify.
+ * @param {boolean} [formatted] - Whether to format the output.
+ * @returns {string} The stringified object.
+ */
+export function stringify(object, formatted = false) {
+  return JSON.stringify(
     object,
     (() => {
       const seen = new WeakSet();
@@ -18,20 +40,43 @@ export const stringify = (object, formatted = false) =>
     })(),
     !formatted ? null : formatted === true ? 4 : formatted,
   );
+}
 
-export const parse = (object, secure = false) => {
+/**
+ * Parses a stringified object.
+ *
+ * @param {string} object - The stringified object.
+ * @param {boolean} [secure] - Whether to use secure parsing.
+ * @returns {Object} The parsed object.
+ */
+export function parse(object, secure = false) {
   if (!secure) return JSON.parse(object);
   try {
     return JSON.parse(object);
   } catch {
     return {};
   }
-};
+}
 
-export const clone = (object, json) =>
-  json ? parse(stringify(object)) : structuredClone(object);
+/**
+ * Clones an object.
+ *
+ * @param {Object} object - The object to clone.
+ * @param {boolean} [json] - Whether to use JSON parsing.
+ * @returns {Object} The cloned object.
+ */
+export function clone(object, json) {
+  return json ? parse(stringify(object)) : structuredClone(object);
+}
 
-export const copyPropertyDescriptors = (object, target) => {
+/**
+ * Copies the property descriptors of one object to another.
+ *
+ * @param {Object} object - The object to copy properties to.
+ * @param {Object} target - The object to copy properties from.
+ * @returns {Object} The object with the copied properties.
+ */
+export function copyPropertyDescriptors(object, target) {
   const targetDescriptors = Object.getOwnPropertyDescriptors(target);
 
   const objectKeys = Object.keys(object);
@@ -47,9 +92,17 @@ export const copyPropertyDescriptors = (object, target) => {
     );
 
   return object;
-};
+}
 
-export const flatten = (object, separator, transformer) => {
+/**
+ * Flattens an object.
+ *
+ * @param {Object} object - The object to flatten.
+ * @param {string} [separator] - The separator to use for nested keys.
+ * @param {function} [transformer] - A function to transform keys.
+ * @returns {Object} The flattened object.
+ */
+export function flatten(object, separator, transformer) {
   const helper = (target, prefix) => {
     let flattened = {};
     const keys = Object.keys(target || {});
@@ -64,4 +117,4 @@ export const flatten = (object, separator, transformer) => {
     return flattened;
   };
   return helper(object);
-};
+}

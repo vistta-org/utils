@@ -1,4 +1,11 @@
-export const isEqual = (arg1, arg2) => {
+/**
+ * Checks if two values are equal.
+ *
+ * @param {any} arg1 - The first value.
+ * @param {any} arg2 - The second value.
+ * @returns {boolean} Whether the two values are equal.
+ */
+export function isEqual(arg1, arg2) {
   if (typeof arg1 !== typeof arg2) return false;
   if (Array.isArray(arg1) && Array.isArray(arg2)) {
     if (arg1.length !== arg2.length) return false;
@@ -20,16 +27,47 @@ export const isEqual = (arg1, arg2) => {
     return true;
   }
   return arg1 === arg2;
-};
+}
 
-export const isPromise = (f) => f instanceof Promise;
+/**
+ * Checks if a value is a Promise.
+ *
+ * @param {any} f - The value to check.
+ * @returns {boolean} Whether the value is a Promise.
+ */
+export function isPromise(f) {
+  return f instanceof Promise;
+}
 
-export const isAsync = (f) => f.constructor.name === "AsyncFunction";
+/**
+ * Checks if a value is an async function.
+ *
+ * @param {function} f - The value to check.
+ * @returns {boolean} Whether the value is an async function.
+ */
+export function isAsync(f) {
+  return f.constructor.name === "AsyncFunction";
+}
 
-export const setImmediate = (callback) => Promise.resolve().then(callback);
+/**
+ * Sets an immediate timeout.
+ *
+ * @param {function} callback - The callback function to execute.
+ * @returns {Promise} A promise that resolves when the callback is executed.
+ */
+export function setImmediate(callback) {
+  return Promise.resolve().then(callback);
+}
 
-export const sleep = (milliseconds) =>
-  new Promise((resolve) => setTimeout(resolve, milliseconds));
+/**
+ * Delays execution for a specified amount of milliseconds.
+ *
+ * @param {number} milliseconds - The number of milliseconds to delay execution.
+ * @returns {Promise} A promise that resolves after the specified time.
+ */
+export function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
 
 export * from "./object.js";
 export * from "./string.js";

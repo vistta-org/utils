@@ -1,7 +1,12 @@
-const hasBuffer = typeof Buffer !== "undefined";
-
-export const encode = (string, encoding = "base64") => {
-  if (hasBuffer) return Buffer.from(string).toString(encoding);
+/**
+ * Encodes a string using a specified encoding.
+ *
+ * @param {string} string - The string to encode.
+ * @param {"base64" | "hex" | "ascii" | "binary"} [encoding] - The encoding to use. Defaults to "base64".
+ * @returns {string} The encoded string.
+ */
+export function encode(string, encoding = "base64") {
+  if (typeof Buffer !== "undefined") return Buffer.from(string).toString(encoding);
   let result = "";
   switch (encoding) {
     case "base64":
@@ -18,10 +23,17 @@ export const encode = (string, encoding = "base64") => {
       throw new Error("Not ready for this encoding");
   }
   return result;
-};
+}
 
-export const decode = (data, encoding = "base64") => {
-  if (hasBuffer) return Buffer.from(data, encoding).toString();
+/**
+ * Decodes a string using a specified encoding.
+ *
+ * @param {string} data - The string to decode.
+ * @param {"base64" | "hex" | "ascii" | "binary"} [encoding] - The encoding to use. Defaults to "base64".
+ * @returns {string} The decoded string.
+ */
+export function decode(data, encoding = "base64") {
+  if (typeof Buffer !== "undefined") return Buffer.from(data, encoding).toString();
   let result = "";
   switch (encoding) {
     case "base64":
@@ -39,12 +51,25 @@ export const decode = (data, encoding = "base64") => {
       throw new Error("Not ready for this encoding");
   }
   return result;
-};
+}
 
-export const capitalize = (string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
+/**
+ * Capitalizes the first letter of a string.
+ *
+ * @param {string} string - The string to capitalize.
+ * @returns {string} The capitalized string.
+ */
+export function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-export const abbreviate = (input) => {
+/**
+ * Abbreviates a number or string.
+ *
+ * @param {string | number} input - The number or string to abbreviate.
+ * @returns {string} The abbreviated string.
+ */
+export function abbreviate(input) {
   if (typeof input === "number") input = `${Math.ceil(input)}`;
   if (typeof input !== "string") return input;
   let target = input.replace(/\s+/g, "");
@@ -73,21 +98,40 @@ export const abbreviate = (input) => {
     shortValue = shortValue.toFixed(1);
   }
   return shortValue + suffixes[suffixNum];
-};
+}
 
-export const isIPAddress = (string) =>
-  new RegExp(
+/**
+ * Checks if a string is a valid IP address.
+ *
+ * @param {string} string - The string to check.
+ * @returns {boolean} Whether the string is a valid IP address.
+ */
+export function isIPAddress(string) {
+  return new RegExp(
     "((^s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))s*$)|(^s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*$))",
   ).test(string);
+}
 
-export const isValidUrl = (string) => {
+/**
+ * Checks if a string is a valid URL.
+ *
+ * @param {string} string - The string to check.
+ * @returns {boolean} Whether the string is a valid URL.
+ */
+export function isValidUrl(string) {
   try {
-    new URL(string);
-    return true;
+    return !!new URL(string);
   } catch {
     return false;
   }
-};
+}
 
-export const isValidUrlPathname = (string) =>
-  !/[^A-Za-z0-9/\-._~!$&'()*+,;=:@/]/g.test(string);
+/**
+ * Checks if a string is a valid URL pathname.
+ *
+ * @param {string} string - The string to check.
+ * @returns {boolean} Whether the string is a valid URL pathname.
+ */
+export function isValidUrlPathname(string) {
+  return !/[^A-Za-z0-9/\-._~!$&'()*+,;=:@/]/g.test(string);
+}

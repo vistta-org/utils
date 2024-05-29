@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "Vistta Utils Package Bundle",
   "main": "index.js",
-  "types": "index.d.ts",
   "type": "module",
   "repository": {
     "type": "git",
