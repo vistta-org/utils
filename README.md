@@ -33,7 +33,7 @@ console.log(capitalize("hello world!"));
  * @param {any} arg2 - The second value.
  * @returns {boolean} Whether the two values are equal.
  */
-function isEqual(arg1, arg2);
+function equals(arg1, arg2);
 
 /**
  * Checks if a value is a Promise.

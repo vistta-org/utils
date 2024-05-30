@@ -5,12 +5,12 @@
  * @param {any} arg2 - The second value.
  * @returns {boolean} Whether the two values are equal.
  */
-export function isEqual(arg1, arg2) {
+export function equals(arg1, arg2) {
   if (typeof arg1 !== typeof arg2) return false;
   if (Array.isArray(arg1) && Array.isArray(arg2)) {
     if (arg1.length !== arg2.length) return false;
     for (let i = 0; i < arg1.length; i++) {
-      if (!isEqual(arg1[i], arg2[i])) return false;
+      if (!equals(arg1[i], arg2[i])) return false;
     }
     return true;
   }
@@ -22,7 +22,7 @@ export function isEqual(arg1, arg2) {
     // Normal Comparation
     if (Object.keys(arg1).length !== Object.keys(arg2).length) return false;
     for (const key in arg1) {
-      if (!isEqual(arg1[key], arg2[key])) return false;
+      if (!equals(arg1[key], arg2[key])) return false;
     }
     return true;
   }

@@ -102,7 +102,7 @@ export function copyPropertyDescriptors(object, target) {
  * @param {function} [transformer] - A function to transform keys.
  * @returns {Object} The flattened object.
  */
-export function flatten(object, separator, transformer) {
+export function flatten(object, separator = ".", transformer) {
   const helper = (target, prefix) => {
     let flattened = {};
     const keys = Object.keys(target || {});
