@@ -4,6 +4,17 @@
   "description": "Vistta Utils Package Bundle",
   "main": "index.js",
   "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./console": "./lib/console.js",
+    "./datetime": "./lib/datetime.js",
+    "./fs": "./lib/fs.js",
+    "./generic": "./lib/generic.js",
+    "./object": "./lib/object.js",
+    "./promise": "./lib/promise.js",
+    "./request": "./lib/request.js",
+    "./string": "./lib/string.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://git.vistta.org/vistta/utils.git"

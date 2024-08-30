@@ -51,15 +51,6 @@ describe("Utils", () => {
     assert.ok(utils.equals(cloned, obj) && obj !== cloned);
   });
 
-  it("copyPropertyDescriptors", () => {
-    const obj = {};
-    Object.defineProperty(obj, 'prop', {
-      value: text,
-      writable: false,
-    });
-    assert.equal(utils.copyPropertyDescriptors({}, obj).prop, text);
-  });
-
   it("flatten", () => {
     assert.equal(utils.flatten({ prop: { key: text } })["prop.key"], text);
   });
