@@ -1,0 +1,25 @@
+{
+  "name": "@vistta/utils",
+  "version": "0.1.0",
+  "description": "Vistta Utils Package Bundle",
+  "main": "index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://git.vistta.org/vistta/utils.git"
+  },
+  "scripts": {
+    "postinstall": ""
+  },
+  "author": "Tiago Terenas Almeida",
+  "license": "CC BY-NC-ND 4.0 DEED",
+  "files": [
+    "LICENSE",
+    "tsconfig.json"
+  ],
+  "dependencies": {
+    "@vistta/console": "*",
+    "@vistta/date-time": "*",
+    "@vistta/fs": "*"
+  }
+}
