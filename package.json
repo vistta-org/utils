@@ -6,9 +6,7 @@
   "type": "module",
   "exports": {
     ".": "./index.js",
-    "./console": "./lib/console.js",
     "./datetime": "./lib/datetime.js",
-    "./fs": "./lib/fs.js",
     "./generic": "./lib/generic.js",
     "./object": "./lib/object.js",
     "./promise": "./lib/promise.js",
@@ -29,8 +27,6 @@
     "tsconfig.json"
   ],
   "dependencies": {
-    "@vistta/console": "*",
-    "@vistta/date-time": "*",
-    "@vistta/fs": "*"
+    "@vistta/date-time": "*"
   }
 }
