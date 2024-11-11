@@ -22,11 +22,7 @@
   },
   "author": "Tiago Terenas Almeida",
   "license": "CC BY-NC-ND 4.0 DEED",
-  "files": [
-    "LICENSE",
-    "tsconfig.json"
-  ],
   "dependencies": {
-    "@vistta/date-time": "*"
+    "@vistta/datetime": "*"
   }
 }
