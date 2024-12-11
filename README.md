@@ -55,7 +55,7 @@ class DateTime {
    *
    * @param {DateTime} a The first date and time object.
    * @param {DateTime} b The second date and time object.
-   * @returns {DateTime} The date and time with the earliest time value.
+   * @returns {DateTime | null} The date and time with the earliest time value.
    */
   static min(a, b);
 
@@ -64,7 +64,7 @@ class DateTime {
    *
    * @param {DateTime} a The first date and time object.
    * @param {DateTime} b The second date and time object.
-   * @returns {DateTime} The date and time with the latest time value.
+   * @returns {DateTime | null} The date and time with the latest time value.
    */
   static max(a, b);
 
@@ -76,6 +76,13 @@ class DateTime {
    * @returns {boolean} Whether both date and time objects are equal.
    */
   static equals(a, b);
+
+  /**
+   * Gets the current time in in milliseconds since the Unix epoch.
+   * 
+   * @returns {number} The time in in milliseconds since the Unix epoch.
+   */
+  static now();
 
   /**
    * Creates a new DateTime instance.
@@ -194,7 +201,7 @@ class DateTime {
    * @param {DateTime} target - The target date and time.
    * @param {string} output - The output format.
    * @param {boolean} [float] - Whether to use floating-point numbers.
-   * @returns {number} The difference between the two date and times.
+   * @returns {number | null} The difference between the two date and times.
    */
   diff(target, output, float);
 
@@ -235,6 +242,15 @@ function setImmediate(callback);
  * @returns {Promise} A promise that resolves after the specified time.
  */
 function sleep(milliseconds);
+
+/**
+ * A base class that automatically binds all methods to the instance.
+ * 
+ * This class iterates over all the methods of the instance and binds them
+ * to the instance itself, ensuring that the `this` context is always correct
+ * when the methods are called.
+ */
+class BoundClass;
 ```
 
 ### object

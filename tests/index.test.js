@@ -2,133 +2,133 @@ import * as utils from "../index.js";
 
 const text = "hello world!";
 
-describe("Utils", () => {
+suite("Utils", () => {
   // generic
-  it("equals", () => {
-    assert.ok(utils.equals({ prop: text }, { prop: text }));
+  test("equals", () => {
+    expect(utils.equals({ prop: text }, { prop: text })).toEqual(true);
   });
 
-  it("setImmediate", async () => {
+  test("setImmediate", async () => {
     const result = await (new Promise((resolve) =>
       setImmediate(() => resolve(text))
     ))
-    assert.equal(result, text);
+    expect(result).toEqual(text);
   });
 
-  it("sleep", async () => {
+  test("sleep", async () => {
     const now = new Date().getTime();
     const time = 250;
     await utils.sleep(time);
-    assert.ok((new Date().getTime() - now) >= time)
+    expect((new Date().getTime() - now) >= time).toEqual(true);
   });
 
   // object
 
-  it("isObject", () => {
-    assert.ok(utils.isObject({}));
+  test("isObject", () => {
+    expect(utils.isObject({})).toEqual(true);
   });
 
-  it("isObjectEmpty", () => {
-    assert.ok(utils.isObjectEmpty({}));
+  test("isObjectEmpty", () => {
+    expect(utils.isObjectEmpty({})).toEqual(true);
   });
 
-  it("isPlainObject", () => {
-    assert.ok(utils.isPlainObject({}));
-    assert.ok(!utils.isPlainObject(new Date()));
+  test("isPlainObject", () => {
+    expect(utils.isPlainObject({})).toEqual(true);
+    expect(!utils.isPlainObject(new Date())).toEqual(true);
   });
 
-  it("stringify", () => {
-    assert.equal(utils.stringify({}), "{}");
+  test("stringify", () => {
+    expect(utils.stringify({})).toEqual("{}");
   });
 
-  it("parse", () => {
-    assert.ok(utils.equals(utils.parse("{}"), {}));
+  test("parse", () => {
+    expect(utils.equals(utils.parse("{}"), {})).toEqual(true);
   });
 
-  it("clone", () => {
+  test("clone", () => {
     const obj = { prop: text };
     const cloned = utils.clone(obj);
-    assert.ok(utils.equals(cloned, obj) && obj !== cloned);
+    expect(utils.equals(cloned, obj) && obj !== cloned).toEqual(true);
   });
 
-  it("flatten", () => {
-    assert.equal(utils.flatten({ prop: { key: text } })["prop.key"], text);
+  test("flatten", () => {
+    expect(utils.flatten({ prop: { key: text } })["prop.key"]).toEqual(text);
   });
 
-  it("assign", () => {
+  test("assign", () => {
     const a = { "test": { "a": 1 } };
     utils.assign(a, { "test": { "b": 2 } });
-    assert.equal(a.test.a, 1);
-    assert.equal(a.test.b, 2);
+    expect(a.test.a).toEqual(1);
+    expect(a.test.b).toEqual(2);
   });
 
-  it("extract", () => {
+  test("extract", () => {
     const object = { key: "value" };
-    assert.equal(utils.extract(object, "key")[0], "value");
+    expect(utils.extract(object, "key")[0]).toEqual("value");
   });
 
-  it("remove", () => {
+  test("remove", () => {
     const object = { key: "value" };
     utils.remove(object, "key");
-    assert.ok(typeof object.key === "undefined");
+    expect(typeof object.key === "undefined").toEqual(true);
   });
 
   // promise
 
-  it("isPromise", () => {
-    assert.ok(utils.isPromise(new Promise((resolve) => setTimeout(resolve, 1000))));
+  test("isPromise", () => {
+    expect(utils.isPromise(new Promise((resolve) => setTimeout(resolve, 1000)))).toEqual(true);
   });
 
-  it("isAsync", () => {
-    assert.ok(utils.isAsync(async () => { }));
+  test("isAsync", () => {
+    expect(utils.isAsync(async () => { })).toEqual(true);
   });
 
-  it("async", async () => {
+  test("async", async () => {
     const test1 = async () => "test";
     const test2 = () => "test";
-    assert.equal(await utils.async(test1()), await utils.async(test2()));
+    expect(await utils.async(test1())).toEqual(await utils.async(test2()));
     const test3 = (callback) => callback(true);
-    assert.ok(await utils.async(test3));
+    expect(await utils.async(test3)).toEqual(true);
   });
 
   // request
 
-  it("request", async () => {
-    assert.equal(typeof utils.request, "function");
-    assert.equal(typeof utils.request.get, "function");
-    assert.equal(typeof utils.request.post, "function");
-    assert.equal(typeof utils.request.head, "function");
-    assert.equal(typeof utils.request.put, "function");
-    assert.equal(typeof utils.request.delete, "function");
-    assert.equal(typeof utils.request.connect, "function");
-    assert.equal(typeof utils.request.options, "function");
-    assert.equal(typeof utils.request.trace, "function");
-    assert.equal(typeof utils.request.patch, "function");
+  test("request", async () => {
+    expect(typeof utils.request).toEqual("function");
+    expect(typeof utils.request.get).toEqual("function");
+    expect(typeof utils.request.post).toEqual("function");
+    expect(typeof utils.request.head).toEqual("function");
+    expect(typeof utils.request.put).toEqual("function");
+    expect(typeof utils.request.delete).toEqual("function");
+    expect(typeof utils.request.connect).toEqual("function");
+    expect(typeof utils.request.options).toEqual("function");
+    expect(typeof utils.request.trace).toEqual("function");
+    expect(typeof utils.request.patch).toEqual("function");
   });
 
   // string
 
-  it("encoding", () => {
-    assert.equal(utils.decode(utils.encode(text)), text);
+  test("encoding", () => {
+    expect(utils.decode(utils.encode(text))).toEqual(text);
   });
 
-  it("capitalize", () => {
-    assert.equal(utils.capitalize(text), "Hello world!");
+  test("capitalize", () => {
+    expect(utils.capitalize(text)).toEqual("Hello world!");
   });
 
-  it("abbreviate", () => {
-    assert.equal(utils.abbreviate("1000"), "1K");
+  test("abbreviate", () => {
+    expect(utils.abbreviate("1000")).toEqual("1K");
   });
 
-  it("isIPAddress", () => {
-    assert.ok(utils.isIPAddress("127.0.0.0"));
+  test("isIPAddress", () => {
+    expect(utils.isIPAddress("127.0.0.0")).toEqual(true);
   });
 
-  it("isValidUrl", () => {
-    assert.ok(utils.isValidUrl("https://google.com"));
+  test("isValidUrl", () => {
+    expect(utils.isValidUrl("https://google.com")).toEqual(true);
   });
 
-  it("isValidUrlPathname", () => {
-    assert.ok(utils.isValidUrlPathname("/test"));
+  test("isValidUrlPathname", () => {
+    expect(utils.isValidUrlPathname("/test")).toEqual(true);
   });
 });
