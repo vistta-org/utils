@@ -2,89 +2,133 @@ import * as utils from "../index.js";
 
 const text = "hello world!";
 
-describe("Utils", () => {
-  it("equals", () => {
-    assert.ok(utils.equals({ prop: text }, { prop: text }));
+suite("Utils", () => {
+  // generic
+  test("equals", () => {
+    expect(utils.equals({ prop: text }, { prop: text })).toEqual(true);
   });
 
-  it("isPromise", () => {
-    assert.ok(utils.isPromise(new Promise((resolve) => setTimeout(resolve, 1000))));
-  });
-
-  it("isAsync", () => {
-    assert.ok(utils.isAsync(async () => { }));
-  });
-
-  it("setImmediate", async () => {
+  test("setImmediate", async () => {
     const result = await (new Promise((resolve) =>
       setImmediate(() => resolve(text))
     ))
-    assert.equal(result, text);
+    expect(result).toEqual(text);
   });
 
-  it("sleep", async () => {
+  test("sleep", async () => {
     const now = new Date().getTime();
     const time = 250;
     await utils.sleep(time);
-    assert.ok((new Date().getTime() - now) >= time)
+    expect((new Date().getTime() - now) >= time).toEqual(true);
   });
 
-  it("isObject", () => {
-    assert.ok(utils.isObject({}));
+  // object
+
+  test("isObject", () => {
+    expect(utils.isObject({})).toEqual(true);
   });
 
-  it("isObjectEmpty", () => {
-    assert.ok(utils.isObjectEmpty({}));
+  test("isObjectEmpty", () => {
+    expect(utils.isObjectEmpty({})).toEqual(true);
   });
 
-  it("stringify", () => {
-    assert.equal(utils.stringify({}), "{}");
+  test("isPlainObject", () => {
+    expect(utils.isPlainObject({})).toEqual(true);
+    expect(!utils.isPlainObject(new Date())).toEqual(true);
   });
 
-  it("parse", () => {
-    assert.ok(utils.equals(utils.parse("{}"), {}));
+  test("stringify", () => {
+    expect(utils.stringify({})).toEqual("{}");
   });
 
-  it("clone", () => {
+  test("parse", () => {
+    expect(utils.equals(utils.parse("{}"), {})).toEqual(true);
+  });
+
+  test("clone", () => {
     const obj = { prop: text };
     const cloned = utils.clone(obj);
-    assert.ok(utils.equals(cloned, obj) && obj !== cloned);
+    expect(utils.equals(cloned, obj) && obj !== cloned).toEqual(true);
   });
 
-  it("copyPropertyDescriptors", () => {
-    const obj = {};
-    Object.defineProperty(obj, 'prop', {
-      value: text,
-      writable: false,
-    });
-    assert.equal(utils.copyPropertyDescriptors({}, obj).prop, text);
+  test("flatten", () => {
+    expect(utils.flatten({ prop: { key: text } })["prop.key"]).toEqual(text);
   });
 
-  it("flatten", () => {
-    assert.equal(utils.flatten({ prop: { key: text } })["prop.key"], text);
+  test("assign", () => {
+    const a = { "test": { "a": 1 } };
+    utils.assign(a, { "test": { "b": 2 } });
+    expect(a.test.a).toEqual(1);
+    expect(a.test.b).toEqual(2);
   });
 
-  it("encoding", () => {
-    assert.equal(utils.decode(utils.encode(text)), text);
+  test("extract", () => {
+    const object = { key: "value" };
+    expect(utils.extract(object, "key")[0]).toEqual("value");
   });
 
-  it("capitalize", () => {
-    assert.equal(utils.capitalize(text), "Hello world!");
+  test("remove", () => {
+    const object = { key: "value" };
+    utils.remove(object, "key");
+    expect(typeof object.key === "undefined").toEqual(true);
   });
 
-  it("abbreviate", () => {
-    assert.equal(utils.abbreviate("1000"), "1K");
+  // promise
+
+  test("isPromise", () => {
+    expect(utils.isPromise(new Promise((resolve) => setTimeout(resolve, 1000)))).toEqual(true);
   });
 
-  it("isIPAddress", () => {
-    assert.ok(utils.isIPAddress("127.0.0.0"));
+  test("isAsync", () => {
+    expect(utils.isAsync(async () => { })).toEqual(true);
   });
 
-  it("isValidUrl", () => {
-    assert.ok(utils.isValidUrl("https://google.com"));
+  test("async", async () => {
+    const test1 = async () => "test";
+    const test2 = () => "test";
+    expect(await utils.async(test1())).toEqual(await utils.async(test2()));
+    const test3 = (callback) => callback(true);
+    expect(await utils.async(test3)).toEqual(true);
   });
 
-  it("isValidUrlPathname", () => {
-    assert.ok(utils.isValidUrlPathname("/test"));
+  // request
+
+  test("request", async () => {
+    expect(typeof utils.request).toEqual("function");
+    expect(typeof utils.request.get).toEqual("function");
+    expect(typeof utils.request.post).toEqual("function");
+    expect(typeof utils.request.head).toEqual("function");
+    expect(typeof utils.request.put).toEqual("function");
+    expect(typeof utils.request.delete).toEqual("function");
+    expect(typeof utils.request.connect).toEqual("function");
+    expect(typeof utils.request.options).toEqual("function");
+    expect(typeof utils.request.trace).toEqual("function");
+    expect(typeof utils.request.patch).toEqual("function");
+  });
+
+  // string
+
+  test("encoding", () => {
+    expect(utils.decode(utils.encode(text))).toEqual(text);
+  });
+
+  test("capitalize", () => {
+    expect(utils.capitalize(text)).toEqual("Hello world!");
+  });
+
+  test("abbreviate", () => {
+    expect(utils.abbreviate("1000")).toEqual("1K");
+  });
+
+  test("isIPAddress", () => {
+    expect(utils.isIPAddress("127.0.0.0")).toEqual(true);
+  });
+
+  test("isValidUrl", () => {
+    expect(utils.isValidUrl("https://google.com")).toEqual(true);
+  });
+
+  test("isValidUrlPathname", () => {
+    expect(utils.isValidUrlPathname("/test")).toEqual(true);
   });
 });
