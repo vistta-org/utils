@@ -1,4 +1,4 @@
-name: Project Release Start
+name: Project Setup
 on:
   pull_request:
     types: [labeled]
@@ -13,9 +13,9 @@ jobs:
       image: node:latest
     if: ${{ startsWith(gitea.event.pull_request.labels[0].name, 'Project/Release') && gitea.event.pull_request.milestone == null }}
     steps:
-      -
+      - 
         name: Checkout
-        uses: actions/checkout@v4
+        uses: tiagomta/checkout@v1
         with:
           repository: vistta/vistta
           ref: ${{ gitea.event.pull_request.head.ref }}
@@ -23,15 +23,14 @@ jobs:
           fetch-depth: 0
           submodules: true
       - 
-        name: Checkout Modules
-        run: git submodule update --remote
-      - 
-        name: Setup Node
-        run: npm i
-      - 
-        name: "Start Release"
-        uses: ./.gitea/actions/start-release
+        name: Version Increment
+        id: version
+        uses: tiagomta/npm@v1
         with:
-          type: '${{ gitea.event.pull_request.labels[0].name }}'
+          command: version increment "${{ gitea.event.pull_request.labels[0].name }}" --email devops@vistta.org
           working-directory: ./packages/${{ env.module }}
-          token: ${{ secrets.GIT_TOKEN }}
+      - 
+        name: Create Milestone
+        uses: tiagomta/gitea@v1
+        with:
+          command: milestone create "${{ gitea.event.pull_request.labels[0].name }} (v${{ steps.version.outputs.result }})"
