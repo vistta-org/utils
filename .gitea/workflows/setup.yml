@@ -23,11 +23,28 @@ jobs:
           fetch-depth: 0
           submodules: true
       - 
-        name: Version Increment
+        name: Release Patch
+        if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Patch') }}
         id: version
         uses: tiagomta/npm@v1
         with:
-          command: version increment "${{ gitea.event.pull_request.labels[0].name.replace("Project/Release", "") }}" --email devops@vistta.org
+          command: version patch --email devops@vistta.org
+          working-directory: ./packages/${{ env.module }}
+      - 
+        name: Release Minor
+        if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Minor') }}
+        id: version
+        uses: tiagomta/npm@v1
+        with:
+          command: version minor --email devops@vistta.org
+          working-directory: ./packages/${{ env.module }}
+      - 
+        name: Release Major
+        if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Major') }}
+        id: version
+        uses: tiagomta/npm@v1
+        with:
+          command: version major --email devops@vistta.org
           working-directory: ./packages/${{ env.module }}
       - 
         name: Create Milestone

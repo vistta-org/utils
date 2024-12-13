@@ -41,4 +41,4 @@ jobs:
         name: Create Release
         uses: tiagomta/gitea@v1
         with:
-          command: release create ${{ steps.tag.outputs.result }} --milestone ${{ gitea.event.pull_request.milestone.id }}
+          command: release create ${{ steps.tag.outputs.result }} --fromMilestone ${{ gitea.event.pull_request.milestone.id }}
