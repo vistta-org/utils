@@ -24,9 +24,9 @@ jobs:
       - 
         name: Close Issues
         uses: tiagomta/gitea@v1
-        working-directory: ./packages/${{ env.module }}
         with:
           token: ${{ secrets.GIT_TOKEN }}
+          working-directory: ./packages/${{ env.module }}
           command: issues close --fromCommit --milestone ${{ gitea.event.pull_request.milestone.id }}
       - 
         name: Setup Node
