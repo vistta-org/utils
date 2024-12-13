@@ -250,7 +250,15 @@ function sleep(milliseconds);
  * to the instance itself, ensuring that the `this` context is always correct
  * when the methods are called.
  */
-class BoundClass;
+class BoundClass {
+  /**
+   * Creates an instance of BoundClass.
+   * 
+   * The constructor retrieves all the method names from the prototype of the instance,
+   * and binds each method to the instance, except for the constructor.
+   */
+  constructor();
+}
 ```
 
 ### object
