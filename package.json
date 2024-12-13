@@ -1,6 +1,6 @@
 {
   "name": "@vistta/utils",
-  "version": "0.1.0",
+  "version": null,
   "description": "Vistta Utils Package Bundle",
   "main": "index.js",
   "type": "module",
