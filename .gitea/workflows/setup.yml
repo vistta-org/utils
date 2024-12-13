@@ -25,29 +25,42 @@ jobs:
       - 
         name: Release Patch
         if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Patch') }}
-        id: version
+        id: patch
         uses: tiagomta/npm@v1
         with:
           command: version patch --email devops@vistta.org
           working-directory: ./packages/${{ env.module }}
       - 
+        name: Create Patch Milestone
+        if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Patch') }}
+        uses: tiagomta/gitea@v1
+        with:
+          command: milestone create "Patch (v${{ steps.patch.outputs.result }})" --linkPR
+      - 
         name: Release Minor
         if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Minor') }}
-        id: version
+        id: minor
         uses: tiagomta/npm@v1
         with:
           command: version minor --email devops@vistta.org
           working-directory: ./packages/${{ env.module }}
       - 
+        name: Create Minor Milestone
+        if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Minor') }}
+        uses: tiagomta/gitea@v1
+        with:
+          command: milestone create "Minor (v${{ steps.minor.outputs.result }})" --linkPR
+      - 
         name: Release Major
         if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Major') }}
-        id: version
+        id: major
         uses: tiagomta/npm@v1
         with:
           command: version major --email devops@vistta.org
           working-directory: ./packages/${{ env.module }}
       - 
-        name: Create Milestone
+        name: Create Major Milestone
+        if: ${{ endsWith(gitea.event.pull_request.labels[0].name, 'Major') }}
         uses: tiagomta/gitea@v1
         with:
-          command: milestone create "${{ gitea.event.pull_request.labels[0].name }} (v${{ steps.version.outputs.result }})" --linkPR
+          command: milestone create "Major (v${{ steps.major.outputs.result }})" --linkPR
