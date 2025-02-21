@@ -6,6 +6,7 @@
   "type": "module",
   "exports": {
     ".": "./index.js",
+    "./array": "./lib/array.js",
     "./datetime": "./lib/datetime.js",
     "./generic": "./lib/generic.js",
     "./object": "./lib/object.js",
@@ -23,6 +24,6 @@
   "author": "Tiago Terenas Almeida",
   "license": "CC BY-NC-ND 4.0 DEED",
   "dependencies": {
-    "@vistta/datetime": "0.1.0"
+    "@vistta/datetime": "*"
   }
 }
