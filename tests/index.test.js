@@ -22,6 +22,20 @@ suite("Utils", () => {
     expect((new Date().getTime() - now) >= time).toEqual(true);
   });
 
+  // array
+  
+  test("ensureArray", () => {
+    expect(Array.isArray(utils.ensureArray({ prop: text }))).toEqual(true);
+  });
+
+  test("addUnique", () => {
+    const array = [];
+    utils.addUnique(array, text);
+    expect(array.length).toEqual(1);
+    utils.addUnique(array, text);
+    expect(array.length).toEqual(1);
+  });
+
   // object
 
   test("isObject", () => {
