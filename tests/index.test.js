@@ -9,9 +9,7 @@ suite("Utils", () => {
   });
 
   test("setImmediate", async () => {
-    const result = await (new Promise((resolve) =>
-      setImmediate(() => resolve(text))
-    ))
+    const result = await new Promise((resolve) => setImmediate(() => resolve(text)));
     expect(result).toEqual(text);
   });
 
@@ -19,11 +17,11 @@ suite("Utils", () => {
     const now = new Date().getTime();
     const time = 250;
     await utils.sleep(time);
-    expect((new Date().getTime() - now) >= time).toEqual(true);
+    expect(new Date().getTime() - now >= time).toEqual(true);
   });
 
   // array
-  
+
   test("ensureArray", () => {
     expect(Array.isArray(utils.ensureArray({ prop: text }))).toEqual(true);
   });
@@ -70,8 +68,8 @@ suite("Utils", () => {
   });
 
   test("assign", () => {
-    const a = { "test": { "a": 1 } };
-    utils.assign(a, { "test": { "b": 2 } });
+    const a = { test: { a: 1 } };
+    utils.assign(a, { test: { b: 2 } });
     expect(a.test.a).toEqual(1);
     expect(a.test.b).toEqual(2);
   });
@@ -94,7 +92,7 @@ suite("Utils", () => {
   });
 
   test("isAsync", () => {
-    expect(utils.isAsync(async () => { })).toEqual(true);
+    expect(utils.isAsync(async () => {})).toEqual(true);
   });
 
   test("async", async () => {
