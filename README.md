@@ -79,7 +79,7 @@ class DateTime {
 
   /**
    * Gets the current time in in milliseconds since the Unix epoch.
-   * 
+   *
    * @returns {number} The time in in milliseconds since the Unix epoch.
    */
   static now();
@@ -245,7 +245,7 @@ function sleep(milliseconds);
 
 /**
  * A base class that automatically binds all methods to the instance.
- * 
+ *
  * This class iterates over all the methods of the instance and binds them
  * to the instance itself, ensuring that the `this` context is always correct
  * when the methods are called.
@@ -253,7 +253,7 @@ function sleep(milliseconds);
 class BoundClass {
   /**
    * Creates an instance of BoundClass.
-   * 
+   *
    * The constructor retrieves all the method names from the prototype of the instance,
    * and binds each method to the instance, except for the constructor.
    */
@@ -515,7 +515,7 @@ function isValidUrlPathname(string);
 
 ## **License**
 
-Attribution-NonCommercial-NoDerivatives 4.0 International
+Apache 2.0 with Commons Clause
 
 ## **Contributing**
 
