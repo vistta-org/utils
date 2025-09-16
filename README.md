@@ -25,6 +25,35 @@ console.log(capitalize("hello world!"));
 
 ## **API**
 
+### array
+
+```typescript
+/**
+ * Ensure that the given value is an array. If it is not an array, it will be wrapped in an array.
+ *
+ * @param {any} value - The value to ensure is an array.
+ * @returns {Array} - The value as an array.
+ */
+function ensureArray(value);
+
+/**
+ * Add the given value to the array if it is not already present.
+ *
+ * @param {Array} array - The array to add the value to.
+ * @param {any} value - The value to add to the array.
+ */
+function addUnique(array, value);
+
+/**
+ * Insert anything into the array sorted.
+ * @param {Array} array - The array to insert into.
+ * @param {any} value - The value to insert.
+ * @param {Function} [compare] - The comparison function to use. It should return a negative number if a is less than b, a positive number if a is greater than b, and 0 if they are equal.
+ * @returns {number} - The index at which the value was inserted.
+ */
+function insertSorted(array, value, compare);
+```
+
 ### datetime
 
 ```typescript
@@ -212,6 +241,52 @@ class DateTime {
    * @returns {string} The relative time from the reference date.
    */
   relative(options);
+
+  /**
+   * Adds the specified value in the specified unit to the date and time (e.g., year, month, day, hour, minute, second).
+   * @param {"year"|"month"|"week"|"day"|"hour"|"minute"|"second"|"millisecond"} unit The unit to add the value in.
+   * @param {number} value The value to add.
+   * @returns {DateTime} The updated date and time object.
+   */
+  add(unit, value = 1);
+
+  /**
+   * Subtracts the specified value in the specified unit from the date and time (e.g., year, month, day, hour, minute, second).
+   * @param {number} value The value to subtract.
+   * @param {"year"|"month"|"week"|"day"|"hour"|"minute"|"second"|"millisecond"} unit The unit to subtract the value in.
+   * @returns {DateTime} The updated date and time object.
+   */
+  subtract(unit, value = 1);
+
+  /**
+   * Sets the date and time to the start of the specified unit (e.g., year, month, day, hour, minute, second).
+   * @param {"year"|"month"|"week"|"day"|"hour"|"minute"|"second"} unit The unit to set the date and time to the start of.
+   * @returns {DateTime} The updated date and time object.
+   */
+  startOf(unit);
+
+  /**
+   * Sets the date and time to the end of the specified unit (e.g., year, month, day, hour, minute, second).
+   * @param {"year"|"month"|"week"|"day"|"hour"|"minute"|"second"} unit The unit to set the date and time to the end of.
+   * @returns {DateTime} The updated date and time object.
+   */
+  endOf(unit);
+
+  /**
+   * Moves the date and time forward by the specified step in the specified unit (e.g., year, month, day, hour, minute, second).
+   * @param {"year"|"month"|"week"|"day"|"hour"|"minute"|"second"} unit The unit to move the date and time by.
+   * @param {number} step The number of units to move the date and time by (positive or negative).
+   * @returns {DateTime} The updated date and time object.
+   */
+  next(unit, step = 1);
+
+  /**
+   * Moves the date and time backward by the specified step in the specified unit (e.g., year, month, day, hour, minute, second).
+   * @param {"year"|"month"|"week"|"day"|"hour"|"minute"|"second"} unit The unit to move the date and time by.
+   * @param {number} step The number of units to move the date and time by (positive or negative).
+   * @returns {DateTime} The updated date and time object.
+   */
+  previous(unit, step = 1);
 }
 ```
 
@@ -326,6 +401,55 @@ function copyPropertyDescriptor(object, target, propertyName);
  * @returns {Object} The flattened object.
  */
 function flatten(object, separator, transformer);
+
+/**
+ * Recursively assigns properties of object `b` to object `a`.
+ *
+ * @param {Object} a - The target object to which properties will be assigned.
+ * @param {Object} b - The source object from which properties will be assigned.
+ * @returns {Object} - The modified target object `a`.
+ */
+function assign(a, b);
+
+/**
+ * Extracts the specified keys from the given object and deletes them from the object.
+ *
+ * @param {Object} object - The object from which to extract and delete keys.
+ * @param {...string} keys - The keys to extract and delete from the object.
+ * @returns {Array} - An array containing the values of the extracted keys.
+ */
+function extract(object, ...keys);
+
+/**
+ * Removes the specified keys from the given object.
+ *
+ * @param {Object} object - The object from which to remove keys.
+ * @param {...string} keys - The keys to remove from the object.
+ */
+function remove(object, ...keys);
+
+/**
+ * Creates a proxy for an object that intercepts get and set operations.
+ * @param {Object} obj - The object to proxy.
+ * @param {Object} options - Options for the proxy.
+ * @param {function} [options.apply] - A trap for a function call.
+ * @param {function} [options.construct] - A trap for the new operator.
+ * @param {function} [options.defineProperty] - A trap for Object.defineProperty.
+ * @param {function} [options.deleteProperty] - A trap for the delete operator.
+ * @param {function} [options.get] - A trap for getting property values.
+ * @param {function} [options.getOwnPropertyDescriptor] - A trap for Object.getOwnPropertyDescriptor.
+ * @param {function} [options.getPrototypeOf] - A trap for Object.getPrototypeOf.
+ * @param {function} [options.has] - A trap for the in operator.
+ * @param {function} [options.isExtensible] - A trap for Object.isExtensible.
+ * @param {function} [options.ownKeys] - A trap for Object.getOwnPropertyNames and Object.getOwnPropertySymbols.
+ * @param {function} [options.preventExtensions] - A trap for Object.preventExtensions.
+ * @param {function} [options.set] - A trap for setting property values.
+ * @param {function} [options.setPrototypeOf] - A trap for Object.setPrototypeOf.
+ * @param {boolean} [options.recursive=true] - Whether to wrap nested objects in proxies.
+ * @param {boolean} [options.readonly] - If true, the proxy will not allow setting properties.
+ * @returns {Proxy} A proxy for the object.
+ */
+function proxy(target, options = {});
 ```
 
 ### promise
@@ -511,6 +635,15 @@ function isValidUrl(string);
  * @returns {boolean} Whether the string is a valid URL pathname.
  */
 function isValidUrlPathname(string);
+
+/**
+ * Ensures that a given string ends with a specified pattern.
+ *
+ * @param {string} str - The string to be checked.
+ * @param {string} pattern - The pattern that the string should end with.
+ * @returns {string} - The original string with the pattern appended if it wasn't already present.
+ */
+function ensureEndsWith(str, pattern);
 ```
 
 ## **License**
