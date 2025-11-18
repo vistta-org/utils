@@ -34,6 +34,28 @@ suite("Utils", () => {
     expect(array.length).toEqual(1);
   });
 
+  test("join", () => {
+    const array = [1, 2, 3];
+    expect(utils.join(array, "-", (v) => v * 2)).toEqual("2-4-6");
+  });
+
+  // color
+
+  test("formatColor", () => {
+    expect(utils.formatColor("#FF0000", "rgb")).toEqual("rgb(255, 0, 0)");
+    expect(utils.formatColor("rgb(255, 0, 0)", "hsl")).toEqual("hsl(0, 100%, 50%)");
+    expect(utils.formatColor("hsl(0, 100%, 50%)", "hex")).toEqual("#FF0000");
+  });
+
+  test("mixColors", () => {
+    expect(utils.mixColors("#FF0000", "#0000FF", "hex", 0.5)).toEqual("#BC00BC");
+  });
+
+  test("contrastColor", () => {
+    expect(utils.contrastColor("#000000")).toEqual("#FFFFFF");
+    expect(utils.contrastColor("#FFFFFF")).toEqual("#000000");
+  });
+
   // object
 
   test("isObject", () => {
