@@ -1,4 +1,5 @@
 export * from "./lib/array.js";
+export * from "./lib/color.js";
 export * from "./lib/datetime.js";
 export * from "./lib/generic.js";
 export * from "./lib/object.js";

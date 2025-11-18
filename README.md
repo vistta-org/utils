@@ -54,6 +54,36 @@ function addUnique(array, value);
 function insertSorted(array, value, compare);
 ```
 
+### color
+
+```typescript
+/**
+ * Convert color from one format to another.
+ * @param {string} color Input color string
+ * @param {"hex" | "rgb" | "rgba" | "hsl" | "hsla"} format Output format: "hex", "rgb", "rgba", "hsl", "hsla"
+ * @returns {string} Converted color string
+ */
+function convertColor(color, format);
+
+/**
+ * Mix two colors by a given ratio.
+ * @param {string} aStr First color string
+ * @param {string} bStr Second color string
+ * @param {"hex" | "rgb" | "rgba" | "hsl" | "hsla"} [format="hex"] Output format: "hex", "rgb", "rgba", "hsl", "hsla"
+ * @param {number|string} [t=0.5] Mix ratio (0 to 1 or percentage string)
+ * @returns {string} Mixed color string
+ */
+function mixColors(aStr, bStr, format = "hex", t = 0.5);
+
+/**
+ * Get a contrasting color (black or white) for the given color.
+ * @param {string} color Input color string
+ * @param {"hex" | "rgb" | "rgba" | "hsl" | "hsla"} [format="hex"] Output format: "hex", "rgb", "rgba", "hsl", "hsla"
+ * @returns {string} Contrasting color string
+ */
+function contrastColor(color, format = "hex");
+```
+
 ### datetime
 
 ```typescript
