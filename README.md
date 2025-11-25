@@ -603,6 +603,13 @@ function request.trace(url, options);
  * @returns {Promise<Response>} A promise that resolves to the response data.
  */
 function request.patch(url, options);
+
+/**
+ * Sets the bearer token for all requests.
+ *
+ * @param {string} token - The bearer token to set.
+ */
+function request.setAuthorization(token);
 ```
 
 ### string
