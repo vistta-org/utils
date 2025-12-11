@@ -349,6 +349,24 @@ function setImmediate(callback);
 function sleep(milliseconds);
 
 /**
+ * Creates a debounced version of a function.
+ * 
+ * @param {function} callback - The function to debounce.
+ * @param {number} [delay] - The delay in milliseconds, default 200ms.
+ * @returns {function} A debounced version of the function.
+ */
+function debounce(callback, delay);
+
+/**
+ * Creates a throttled version of a function.
+ * 
+ * @param {function} callback - The function to throttle.
+ * @param {number} [limit] - The time limit in milliseconds, default 200ms.
+ * @returns {function} A throttled version of the function.
+ */
+function throttle(callback, limit);
+
+/**
  * A base class that automatically binds all methods to the instance.
  *
  * This class iterates over all the methods of the instance and binds them

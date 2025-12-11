@@ -20,6 +20,33 @@ suite("Utils", () => {
     expect(new Date().getTime() - now >= time).toEqual(true);
   });
 
+  test("debounce", async () => {
+    let counter = 0;
+    const debounced = utils.debounce(() => {
+      counter++;
+    }, 100);
+    debounced();
+    debounced();
+    debounced();
+    await utils.sleep(200);
+    expect(counter).toEqual(1);
+  });
+
+  test("throttle", async () => {
+    let counter = 0;
+    const throttled = utils.throttle(() => {
+      counter++;
+    }, 100);
+    throttled();
+    throttled();
+    throttled();
+    await utils.sleep(200);
+    expect(counter).toEqual(1);
+    throttled();
+    await utils.sleep(150);
+    expect(counter).toEqual(2);
+  });
+
   // array
 
   test("ensureArray", () => {
