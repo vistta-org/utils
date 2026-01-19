@@ -192,4 +192,8 @@ suite("Utils", () => {
   test("isValidUrlPathname", () => {
     expect(utils.isValidUrlPathname("/test")).toEqual(true);
   });
+
+  test("isNumeric", () => {
+    expect(utils.isNumeric("1234")).toEqual(true);
+  });
 });

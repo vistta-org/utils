@@ -350,7 +350,7 @@ function sleep(milliseconds);
 
 /**
  * Creates a debounced version of a function.
- * 
+ *
  * @param {function} callback - The function to debounce.
  * @param {number} [delay] - The delay in milliseconds, default 200ms.
  * @returns {function} A debounced version of the function.
@@ -359,7 +359,7 @@ function debounce(callback, delay);
 
 /**
  * Creates a throttled version of a function.
- * 
+ *
  * @param {function} callback - The function to throttle.
  * @param {number} [limit] - The time limit in milliseconds, default 200ms.
  * @returns {function} A throttled version of the function.
@@ -699,6 +699,14 @@ function isValidUrlPathname(string);
  * @returns {string} - The original string with the pattern appended if it wasn't already present.
  */
 function ensureEndsWith(str, pattern);
+
+/**
+ * Checks if a string is numeric.
+ *
+ * @param {string} string - The string to check.
+ * @returns {boolean} Whether the string is numeric.
+ */
+function isNumeric(str);
 ```
 
 ## **License**
