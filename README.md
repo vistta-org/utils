@@ -335,8 +335,8 @@ function equals(arg1, arg2);
 /**
  * Sets an immediate timeout.
  *
- * @param {function} callback - The callback function to execute.
- * @returns {Promise} A promise that resolves when the callback is executed.
+ * @param {() => any} callback - The callback function to execute.
+ * @returns {Promise<any>} A promise that resolves when the callback is executed.
  */
 function setImmediate(callback);
 
@@ -536,7 +536,6 @@ function async(value);
  *
  * @param {string} url - The URL for the request.
  * @param {Options} [options] Options for the request.
- * @param {string} [options.method] The HTTP method for the request (e.g. GET, POST).
  * @returns {Promise<Response>} A promise that resolves to the response.
  */
 function request(url, options);
@@ -703,7 +702,7 @@ function ensureEndsWith(str, pattern);
 /**
  * Checks if a string is numeric.
  *
- * @param {string} string - The string to check.
+ * @param {string} str - The string to check.
  * @returns {boolean} Whether the string is numeric.
  */
 function isNumeric(str);
