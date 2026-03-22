@@ -12,7 +12,9 @@
     "./object": "./lib/object.js",
     "./promise": "./lib/promise.js",
     "./request": "./lib/request.js",
-    "./string": "./lib/string.js"
+    "./string": "./lib/string.js",
+    "./node": "./lib/node/index.js",
+    "./node/database": "./lib/node/database.js"
   },
   "repository": {
     "type": "git",
