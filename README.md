@@ -367,6 +367,16 @@ function debounce(callback, delay);
 function throttle(callback, limit);
 
 /**
+ * Formats a byte count into a human-readable string using the smallest
+ * appropriate unit (B, KB, MB, GB, TB, PB).
+ *
+ * @param {number} bytes - The number of bytes.
+ * @param {number} [decimals] - The number of decimal places, default 2.
+ * @returns {string} The formatted size string.
+ */
+function formatSize(bytes, decimals);
+
+/**
  * A base class that automatically binds all methods to the instance.
  *
  * This class iterates over all the methods of the instance and binds them

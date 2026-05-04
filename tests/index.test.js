@@ -47,6 +47,17 @@ suite("Utils", () => {
     expect(counter).toEqual(2);
   });
 
+  test("formatSize", () => {
+    expect(utils.formatSize(0)).toEqual("0 B");
+    expect(utils.formatSize(512)).toEqual("512 B");
+    expect(utils.formatSize(1024)).toEqual("1.00 KB");
+    expect(utils.formatSize(1536)).toEqual("1.50 KB");
+    expect(utils.formatSize(1024 * 1024)).toEqual("1.00 MB");
+    expect(utils.formatSize(1024 * 1024 * 1024)).toEqual("1.00 GB");
+    expect(utils.formatSize(1024 * 1024 * 1024 * 1024)).toEqual("1.00 TB");
+    expect(utils.formatSize(1536, 1)).toEqual("1.5 KB");
+  });
+
   // array
 
   test("ensureArray", () => {
