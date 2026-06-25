@@ -377,6 +377,23 @@ function throttle(callback, limit);
 function formatSize(bytes, decimals);
 
 /**
+ * Schedules a callback to run at a fixed interval aligned to the wall clock.
+ *
+ * Unlike `setInterval`, which drifts over time and can cause gaps between
+ * consecutive windows, this function computes the delay until the next
+ * boundary and re-arms a fresh `setTimeout` after every invocation.
+ * This guarantees the callback always fires as close as possible to the
+ * boundary, preventing missed ticks.
+ *
+ * @param {() => any} callback - The callback function to execute.
+ * @param {string|number} [unit] - The interval unit. Accepts a unit name
+ *   ("second", "minute", "hour", "day") optionally prefixed with a count
+ *   (e.g. "2 minutes", "1 day", "3 seconds"). Defaults to "minute".
+ * @returns {() => void} A cancel function that stops further invocations.
+ */
+function runEvery(callback, unit);
+
+/**
  * A base class that automatically binds all methods to the instance.
  *
  * This class iterates over all the methods of the instance and binds them

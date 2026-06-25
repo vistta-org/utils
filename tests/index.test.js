@@ -4,12 +4,53 @@ const text = "hello world!";
 
 suite("Utils", () => {
   // generic
-  test("equals", () => {
+  test("equals primitives", () => {
+    expect(utils.equals(1, 1)).toEqual(true);
+    expect(utils.equals("a", "a")).toEqual(true);
+    expect(utils.equals(true, true)).toEqual(true);
+    expect(utils.equals(1, 2)).toEqual(false);
+    expect(utils.equals("a", "b")).toEqual(false);
+    expect(utils.equals(1, "1")).toEqual(false);
+  });
+
+  test("equals nullish", () => {
+    expect(utils.equals(null, null)).toEqual(true);
+    expect(utils.equals(undefined, undefined)).toEqual(true);
+    expect(utils.equals(null, undefined)).toEqual(false);
+    expect(utils.equals(null, 0)).toEqual(false);
+  });
+
+  test("equals arrays", () => {
+    expect(utils.equals([1, 2, 3], [1, 2, 3])).toEqual(true);
+    expect(utils.equals([1, 2, 3], [1, 2])).toEqual(false);
+    expect(utils.equals([1, 2, 3], [3, 2, 1])).toEqual(false);
+    expect(utils.equals([{ a: 1 }], [{ a: 1 }])).toEqual(true);
+    expect(utils.equals([], [])).toEqual(true);
+  });
+
+  test("equals objects", () => {
     expect(utils.equals({ prop: text }, { prop: text })).toEqual(true);
+    expect(utils.equals({ a: 1 }, { a: 2 })).toEqual(false);
+    expect(utils.equals({ a: 1 }, { a: 1, b: 2 })).toEqual(false);
+    expect(utils.equals({ a: { b: 1 } }, { a: { b: 1 } })).toEqual(true);
+    expect(utils.equals({ a: { b: 1 } }, { a: { b: 2 } })).toEqual(false);
+  });
+
+  test("equals dates", () => {
+    const d1 = new Date("2024-01-01T00:00:00Z");
+    const d2 = new Date("2024-01-01T00:00:00Z");
+    expect(utils.equals(d1, d2)).toEqual(true);
+    expect(utils.equals(d1, new Date("2025-01-01T00:00:00Z"))).toEqual(false);
+  });
+
+  test("equals different constructors", () => {
+    class A {}
+    class B {}
+    expect(utils.equals(new A(), new B())).toEqual(false);
   });
 
   test("setImmediate", async () => {
-    const result = await new Promise((resolve) => setImmediate(() => resolve(text)));
+    const result = await utils.setImmediate(() => text);
     expect(result).toEqual(text);
   });
 
@@ -30,6 +71,18 @@ suite("Utils", () => {
     debounced();
     await utils.sleep(200);
     expect(counter).toEqual(1);
+  });
+
+  test("debounce uses last arguments", async () => {
+    let captured = null;
+    const debounced = utils.debounce((val) => {
+      captured = val;
+    }, 100);
+    debounced("first");
+    debounced("second");
+    debounced("third");
+    await utils.sleep(200);
+    expect(captured).toEqual("third");
   });
 
   test("throttle", async () => {
@@ -56,6 +109,104 @@ suite("Utils", () => {
     expect(utils.formatSize(1024 * 1024 * 1024)).toEqual("1.00 GB");
     expect(utils.formatSize(1024 * 1024 * 1024 * 1024)).toEqual("1.00 TB");
     expect(utils.formatSize(1536, 1)).toEqual("1.5 KB");
+  });
+
+  test("formatSize edge cases", () => {
+    expect(utils.formatSize(-100)).toEqual("0 B");
+    expect(utils.formatSize(NaN)).toEqual("0 B");
+    expect(utils.formatSize(Infinity)).toEqual("0 B");
+    expect(utils.formatSize(1024 * 1024 * 1024 * 1024 * 1024)).toEqual("1.00 PB");
+    expect(utils.formatSize(1024, 0)).toEqual("1 KB");
+  });
+
+  test("runEvery minute", async () => {
+    let counter = 0;
+    const cancel = utils.runEvery(() => {
+      counter++;
+    }, "minute");
+    expect(typeof cancel).toEqual("function");
+    cancel();
+    expect(counter).toEqual(0);
+  });
+
+  test("runEvery hour", () => {
+    let counter = 0;
+    const cancel = utils.runEvery(() => {
+      counter++;
+    }, "hour");
+    expect(typeof cancel).toEqual("function");
+    cancel();
+    expect(counter).toEqual(0);
+  });
+
+  test("runEvery second", () => {
+    let counter = 0;
+    const cancel = utils.runEvery(() => {
+      counter++;
+    }, "second");
+    expect(typeof cancel).toEqual("function");
+    cancel();
+    expect(counter).toEqual(0);
+  });
+
+  test("runEvery day", () => {
+    let counter = 0;
+    const cancel = utils.runEvery(() => {
+      counter++;
+    }, "day");
+    expect(typeof cancel).toEqual("function");
+    cancel();
+    expect(counter).toEqual(0);
+  });
+
+  test("runEvery with count prefix", () => {
+    let counter = 0;
+    const cancel = utils.runEvery(() => {
+      counter++;
+    }, "2 minutes");
+    expect(typeof cancel).toEqual("function");
+    cancel();
+    expect(counter).toEqual(0);
+  });
+
+  test("runEvery with singular count prefix", () => {
+    let counter = 0;
+    const cancel = utils.runEvery(() => {
+      counter++;
+    }, "1 day");
+    expect(typeof cancel).toEqual("function");
+    cancel();
+    expect(counter).toEqual(0);
+  });
+
+  test("runEvery invalid unit throws", () => {
+    expect(() => utils.runEvery(() => {}, "week")).toThrow();
+  });
+
+  test("BoundClass binds methods", () => {
+    class MyClass extends utils.BoundClass {
+      constructor() {
+        super();
+        this.value = text;
+      }
+      getValue() {
+        return this.value;
+      }
+    }
+    const instance = new MyClass();
+    const fn = instance.getValue;
+    expect(fn()).toEqual(text);
+  });
+
+  test("BoundClass does not bind constructor", () => {
+    class MyClass extends utils.BoundClass {
+      constructor() {
+        super();
+        this.value = 42;
+      }
+    }
+    const instance = new MyClass();
+    expect(instance.value).toEqual(42);
   });
 
   // array
