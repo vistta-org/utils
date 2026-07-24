@@ -290,6 +290,18 @@ suite("Utils", () => {
     expect(utils.extract(object, "key")[0]).toEqual("value");
   });
 
+  test("traverse", () => {
+    const object = { a: { b: { c: 1 } }, d: 2 };
+    const result = [];
+    utils.traverse(object, (value, path) => result.push({ value, path }));
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify([
+        { value: 1, path: ["a", "b", "c"] },
+        { value: 2, path: ["d"] },
+      ]),
+    );
+  });
+
   test("remove", () => {
     const object = { key: "value" };
     utils.remove(object, "key");

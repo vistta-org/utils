@@ -496,6 +496,15 @@ function assign(a, b);
 function extract(object, ...keys);
 
 /**
+ * Traverses an object and applies a callback function to each non-object property.
+ *
+ * @param {Object} object - The object to traverse.
+ * @param {function} callback - The function to call for each non-object property.
+ * @returns {void}
+ */
+function traverse(object, callback);
+
+/**
  * Removes the specified keys from the given object.
  *
  * @param {Object} object - The object from which to remove keys.
