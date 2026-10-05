@@ -383,7 +383,8 @@ function formatSize(bytes, decimals);
  * consecutive windows, this function computes the delay until the next
  * boundary and re-arms a fresh `setTimeout` after every invocation.
  * This guarantees the callback always fires as close as possible to the
- * boundary, preventing missed ticks.
+ * boundary, preventing missed ticks. In Node.js, the timer does not keep the
+ * process alive by itself.
  *
  * @param {() => any} callback - The callback function to execute.
  * @param {string|number} [unit] - The interval unit. Accepts a unit name
