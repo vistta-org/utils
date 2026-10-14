@@ -28,6 +28,6 @@
   "author": "Tiago Terenas Almeida",
   "license": "GPL-3.0-only",
   "dependencies": {
-    "@vistta/datetime": "latest"
+    "@vistta/datetime": "^1.1.0"
   }
 }
