@@ -34,6 +34,6 @@
   "license": "GPL-3.0-only",
   "dependencies": {
     "@vistta/datetime": "^1.1.0",
-    "@vistta/fs": "^1.1.0"
+    "@vistta/fs": "^1.2.0"
   }
 }
