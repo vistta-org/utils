@@ -25,6 +25,143 @@ console.log(capitalize("hello world!"));
 
 ## **API**
 
+### fs
+
+The filesystem facade forwards the default and named exports from `@vistta/fs`:
+
+```javascript
+import fs, { readFile } from "@vistta/utils/fs";
+// Alternatively: import { fs } from "@vistta/utils";
+
+await fs.writeFile("hello.txt", "Hello");
+console.log(await readFile("hello.txt", "utf8"));
+```
+
+Node uses the native filesystem; browser-aware bundlers select the OPFS
+implementation automatically. Browser-only restrictions and unsupported-operation
+errors are unchanged. See the [filesystem documentation](../fs/README.md) for
+the supported API. Filesystem functions are not individually exported from the
+utils root, avoiding collisions with other utilities. `@vistta/fs` remains
+independently usable.
+
+### database
+
+`@vistta/utils/database` exposes the same asynchronous `Database` API in Node
+(built-in `node:sqlite`, Node 22.13+ or newer) and browser-aware bundlers
+(IndexedDB). It exports both `Database` and a default export.
+`@vistta/utils/node/database` and the `Database` export of `@vistta/utils/node`
+also use this asynchronous API, replacing the previous synchronous SQLite API.
+The separate `@vistta/utils/browser/indexedDB` key/value utility is unchanged.
+
+```javascript
+import Database from "@vistta/utils/database";
+
+const users = new Database("app.db", "users", {
+  name: "TEXT",
+  age: "INTEGER",
+  active: "BOOLEAN",
+  settings: "OBJECT",
+  created: "DATE",
+});
+
+try {
+  const id = await users.insert({
+    name: "Alice",
+    age: 25,
+    active: true,
+    settings: { theme: "dark" },
+    created: new Date(),
+  });
+  await users.update({ id, age: 26 });
+  const rows = await users
+    .select(["id", "name"])
+    .where({ active: true })
+    .where("age", ">=", 18)
+    .orderBy("age", "desc")
+    .limit(10)
+    .all();
+  console.log(rows);
+} finally {
+  await users.close();
+}
+```
+
+The constructor takes `(fileOrDatabaseName, tableName, fields)`. Node uses a
+SQLite file (`:memory:` is supported); browsers use origin-scoped IndexedDB
+storage named `@vistta/utils/database:` followed by the supplied name, not an OS
+file. Browser data is subject to quotas and eviction and is not synchronized
+with Node data. Multiple tables can share one database. Table names are
+case-insensitive identifiers; field names are case-sensitive identifiers, must
+not differ only by case, and must not be `id`. The `__vistta_` table prefix is
+reserved. Connections open lazily on the first operation.
+
+Supported schema types:
+
+- `TEXT`: strings.
+- `INTEGER`: safe integer numbers.
+- `REAL`: finite numbers.
+- `BOOLEAN`: booleans.
+- `DATE`: valid `Date` objects, restored as dates.
+- `OBJECT`: JSON-compatible objects/arrays, restored as independent values.
+  Cycles, undefined values, functions, symbols and non-JSON values are rejected.
+- `BLOB`: `Uint8Array`, restored as independent byte arrays.
+- `NULL`: only `null`.
+
+Every field accepts `null`; omitted insert fields become `null`. Explicit
+`undefined` is rejected. Schemas are persisted and checked when reopening;
+incompatible schemas throw instead of silently changing tables. Automatic
+schema migrations and adopting tables created by the legacy SQLite API are
+not supported.
+
+Methods and return values:
+
+- `await insert(fields)`: generates and returns an ID starting at 1.
+- `await update({ id, ...fields })`: patches an existing record and returns its
+  ID; missing records throw. Unspecified fields are preserved.
+- `await upsert({ id, ...fields })`: atomically patches an existing record or
+  inserts a missing one with that ID. Without `id`, it behaves like `insert`.
+- `await delete(id)`: returns `true` when a record was removed, otherwise `false`.
+- `select(fields = "*")`: creates a synchronous query builder.
+- `await close()`: closes this connection; repeated calls are safe, and later
+  operations reject. Other connections are unaffected.
+
+IDs are non-negative safe integers, including explicit ID `0`. Generated IDs
+are not reused after deletion. Explicit high IDs advance the sequence. Inserts
+and upserts are atomic; IndexedDB writes resolve only after transaction commit.
+Inserting `Number.MAX_SAFE_INTEGER` rejects because advancing the ID sequence
+would overflow; the failed write is rolled back.
+
+Query methods:
+
+- `where({ field: value, ... })` adds equality filters.
+- `where(field, operator, value)` supports `=`, `!=`, `<`, `<=`, `>`, `>=`.
+  Repeated filters are combined with AND. Values are validated against the
+  schema; raw SQL expressions are not accepted.
+- `orderBy(field, direction = "asc")` supports `asc` or `desc`; repeated calls
+  add secondary sort keys. Ties and queries without ordering use ascending IDs.
+- `limit(count)` sets one non-negative limit, including zero.
+- `await all()` returns projected records; `await get()` returns the first
+  matching record or `undefined`.
+
+Only `=` and `!=` can compare to `null`; ordered comparisons exclude null
+records. Null sorts first ascending and last descending. Text uses JavaScript
+code-unit ordering, dates compare chronologically, and `OBJECT`/`BLOB` fields
+cannot be filtered or sorted. The shared query layer scans the table and
+filters/sorts in memory to keep behavior identical across backends; SQL
+expressions, indexes, joins and cross-table transactions are not exposed.
+
+Invalid query/schema arguments throw synchronously. Execution, validation and
+storage failures reject promises; no fallback records are returned. Native
+storage errors propagate. Calls using the previous Node database API must await
+execution methods and replace raw SQL filters with structured filters.
+
+From the workspace root, run the shared contract tests against both backends:
+
+```sh
+node packages\cli\bin.js test "packages/utils/tests/database.test.js" --environment=node
+node packages\cli\bin.js test "packages/utils/tests/database.browser.test.js" --environment=browser
+```
+
 ### array
 
 ```typescript

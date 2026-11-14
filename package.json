@@ -8,11 +8,16 @@
     ".": "./index.js",
     "./array": "./lib/array.js",
     "./datetime": "./lib/datetime.js",
+    "./fs": "./lib/fs.js",
     "./generic": "./lib/generic.js",
     "./object": "./lib/object.js",
     "./promise": "./lib/promise.js",
     "./request": "./lib/request.js",
     "./string": "./lib/string.js",
+    "./database": {
+      "browser": "./lib/browser/database.js",
+      "default": "./lib/node/database.js"
+    },
     "./node": "./lib/node/index.js",
     "./node/database": "./lib/node/database.js",
     "./browser": "./lib/browser/index.js",
@@ -28,6 +33,7 @@
   "author": "Tiago Terenas Almeida",
   "license": "GPL-3.0-only",
   "dependencies": {
-    "@vistta/datetime": "^1.1.0"
+    "@vistta/datetime": "^1.1.0",
+    "@vistta/fs": "^1.1.0"
   }
 }
