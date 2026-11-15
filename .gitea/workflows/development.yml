@@ -38,6 +38,10 @@ jobs:
         working-directory: ./packages/${{ env.module }}
         run: npx vistta check .
 
+      - name: Install Chromium and Browser Dependencies
+        run: npx playwright install --with-deps chromium
+
       - name: Unit Tests
-        working-directory: ./packages/${{ env.module }}
-        run: npx vistta test
+        run: |
+          npx vistta test "packages/${{ env.module }}/tests/index.test.js" "packages/${{ env.module }}/tests/database.test.js" "packages/${{ env.module }}/tests/fs.test.js" --environment=node
+          npx vistta test "packages/${{ env.module }}/tests/*.browser.test.js" --environment=browser
